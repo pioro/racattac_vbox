@@ -1,3 +1,5 @@
+### collabn1
+
 ### create VM config
 VBoxManage createvm --name collabn1 --ostype Oracle_64 --register --basefolder VMFOLDERHOLDER
 VBoxManage modifyvm collabn1 --memory 3072
@@ -25,15 +27,60 @@ VBoxManage sharedfolder add collabn1 --name 12cR1 --hostpath "DOWNLOADFOLDERHOLD
 ### Set booting device
 VBoxManage modifyvm  collabn1 --boot1 disk
 
+
+### collabn2
+
+### create VM config
+VBoxManage createvm --name collabn2 --ostype Oracle_64 --register --basefolder VMFOLDERHOLDER
+VBoxManage modifyvm collabn2 --memory 3072
+VBoxManage createhd --filename COLLABN2VDIHOLDERcollabn2.vdi --size 30720 --format VDI --variant Standard
+VBoxManage modifyvm collabn2 --usb on
+VBoxManage storagectl collabn2 --name SATA --add sata --portcount 8 --controller IntelAHCI 
+VBoxManage storageattach collabn2 --storagectl SATA --port 1 --type hdd --medium COLLABN2VDIHOLDERcollabn2.vdi
+VBoxManage storagectl collabn2 --name IDE --add ide --controller PIIX4 --hostiocache on --bootable on
+
+### attach ISO with OS
+VBoxManage storageattach collabn2 --storagectl IDE --port 1 --device 0 --type dvddrive --medium "ORACLEISOPATHHOLDER"
+
+### Add network configuration to VM
+VBoxManage modifyvm collabn2 --nic1 hostonly --hostonlyadapter1 HOSTONLYNETNAMEHOLDER --nictype1 Am79C973
+VBoxManage modifyvm collabn2 --nic2 intnet --intnet2 rac-priv --nictype2 Am79C973
+VBoxManage modifyvm collabn2 --nic3 nat --nictype3 Am79C973
+
+### Add shared folder 
+VBoxManage sharedfolder add collabn2 --name 12cR1 --hostpath "DOWNLOADFOLDERHOLDER" --automount
+
+### Add floppy for KS
+### VBoxManage storagectl collabn2 --name Floppy --add floppy
+### VBoxManage storageattach collabn2 --storagectl Floppy --type fdd --device 0 --medium C:\vm\myimage.vfd
+
+### Set booting device
+VBoxManage modifyvm  collabn2 --boot1 disk
+
+
+
 ### Add shared ASM storage
 VBoxManage createhd --filename VMFOLDERHOLDERasm1.vdi --size 5120 --format VDI --variant Fixed
 VBoxManage modifyhd VMFOLDERHOLDERasm1.vdi --type shareable
 VBoxManage storageattach collabn1 --storagectl SATA --port 2 --type hdd --medium VMFOLDERHOLDERasm1.vdi
+VBoxManage storageattach collabn2 --storagectl SATA --port 2 --type hdd --medium VMFOLDERHOLDERasm1.vdi
 
 VBoxManage createhd --filename VMFOLDERHOLDERasm2.vdi --size 5120 --format VDI --variant Fixed
 VBoxManage modifyhd VMFOLDERHOLDERasm2.vdi --type shareable
 VBoxManage storageattach collabn1 --storagectl SATA --port 3 --type hdd --medium VMFOLDERHOLDERasm2.vdi
+VBoxManage storageattach collabn2 --storagectl SATA --port 3 --type hdd --medium VMFOLDERHOLDERasm2.vdi
 
 VBoxManage createhd --filename VMFOLDERHOLDERasm3.vdi --size 5120 --format VDI --variant Fixed
 VBoxManage modifyhd VMFOLDERHOLDERasm3.vdi --type shareable
 VBoxManage storageattach collabn1 --storagectl SATA --port 4 --type hdd --medium VMFOLDERHOLDERasm3.vdi
+VBoxManage storageattach collabn2 --storagectl SATA --port 4 --type hdd --medium VMFOLDERHOLDERasm3.vdi
+
+VBoxManage createhd --filename VMFOLDERHOLDERasm4.vdi --size 5120 --format VDI --variant Fixed
+VBoxManage modifyhd VMFOLDERHOLDERasm4.vdi --type shareable
+VBoxManage storageattach collabn1 --storagectl SATA --port 5 --type hdd --medium VMFOLDERHOLDERasm4.vdi
+VBoxManage storageattach collabn2 --storagectl SATA --port 5 --type hdd --medium VMFOLDERHOLDERasm4.vdi
+
+VBoxManage createhd --filename VMFOLDERHOLDERasm5.vdi --size 5120 --format VDI --variant Fixed
+VBoxManage modifyhd VMFOLDERHOLDERasm5.vdi --type shareable
+VBoxManage storageattach collabn1 --storagectl SATA --port 6 --type hdd --medium VMFOLDERHOLDERasm5.vdi
+VBoxManage storageattach collabn2 --storagectl SATA --port 6 --type hdd --medium VMFOLDERHOLDERasm5.vdi
