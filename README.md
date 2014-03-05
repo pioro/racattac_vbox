@@ -21,4 +21,5 @@ run vb.sh
 Change control:
 
 0.0.1 - initial release for external tests
+
 0.0.2 - Full configuration for RAC Attack - tested with mostly Windows box
